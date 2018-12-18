@@ -1,57 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Web.Http;
-using System.Web.Http.Description;
-using Sales.Common.Models;
-using Sales.Domain.Models;
-
-namespace Sales.API.Controllers
+﻿namespace Sales.API.Controllers
 {
+    using Sales.Common.Models;
+    using Sales.Domain.Models;
+    using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
+    using System.Linq;
+    using System.Net;
+    using System.Threading.Tasks;
+    using System.Web.Http;
+    using System.Web.Http.Description;
     public class ProductsController : ApiController
     {
         private DataContext db = new DataContext();
 
         // GET: api/Products
-        public IQueryable<Products> GetProducts()
+        public IQueryable<Product> GetProducts()
         {
             return db.Products;
         }
 
         // GET: api/Products/5
-        [ResponseType(typeof(Products))]
-        public async Task<IHttpActionResult> GetProducts(int id)
+        [ResponseType(typeof(Product))]
+        public async Task<IHttpActionResult> GetProduct(int id)
         {
-            Products products = await db.Products.FindAsync(id);
-            if (products == null)
+            Product product = await db.Products.FindAsync(id);
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return Ok(products);
+            return Ok(product);
         }
 
         // PUT: api/Products/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutProducts(int id, Products products)
+        public async Task<IHttpActionResult> PutProduct(int id, Product product)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != products.ProductID)
+            if (id != product.ProductId)
             {
                 return BadRequest();
             }
 
-            db.Entry(products).State = EntityState.Modified;
+            db.Entry(product).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +54,7 @@ namespace Sales.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductsExists(id))
+                if (!ProductExists(id))
                 {
                     return NotFound();
                 }
@@ -73,34 +68,34 @@ namespace Sales.API.Controllers
         }
 
         // POST: api/Products
-        [ResponseType(typeof(Products))]
-        public async Task<IHttpActionResult> PostProducts(Products products)
+        [ResponseType(typeof(Product))]
+        public async Task<IHttpActionResult> PostProduct(Product product)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Products.Add(products);
+            db.Products.Add(product);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = products.ProductID }, products);
+            return CreatedAtRoute("DefaultApi", new { id = product.ProductId }, product);
         }
 
         // DELETE: api/Products/5
-        [ResponseType(typeof(Products))]
-        public async Task<IHttpActionResult> DeleteProducts(int id)
+        [ResponseType(typeof(Product))]
+        public async Task<IHttpActionResult> DeleteProduct(int id)
         {
-            Products products = await db.Products.FindAsync(id);
-            if (products == null)
+            Product product = await db.Products.FindAsync(id);
+            if (product == null)
             {
                 return NotFound();
             }
 
-            db.Products.Remove(products);
+            db.Products.Remove(product);
             await db.SaveChangesAsync();
 
-            return Ok(products);
+            return Ok(product);
         }
 
         protected override void Dispose(bool disposing)
@@ -112,9 +107,9 @@ namespace Sales.API.Controllers
             base.Dispose(disposing);
         }
 
-        private bool ProductsExists(int id)
+        private bool ProductExists(int id)
         {
-            return db.Products.Count(e => e.ProductID == id) > 0;
+            return db.Products.Count(e => e.ProductId == id) > 0;
         }
     }
 }

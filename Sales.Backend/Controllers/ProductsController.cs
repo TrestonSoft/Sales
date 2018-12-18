@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using Sales.Backend.Models;
-using Sales.Common.Models;
-
-namespace Sales.Backend.Controllers
+﻿namespace Sales.Backend.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Net;
+    using System.Web;
+    using System.Web.Mvc;
+    using Sales.Backend.Models;
+    using Sales.Common.Models;
     public class ProductsController : Controller
     {
         private LocalDataContext db = new LocalDataContext();
@@ -29,7 +28,7 @@ namespace Sales.Backend.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Products products = await db.Products.FindAsync(id);
+            Product products = await db.Products.FindAsync(id);
             if (products == null)
             {
                 return HttpNotFound();
@@ -48,7 +47,7 @@ namespace Sales.Backend.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "ProductID,Description,Price,isAvaible,PublishOn")] Products products)
+        public async Task<ActionResult> Create([Bind(Include = "ProductID,Description,Price,isAvaible,PublishOn")] Product products)
         {
             if (ModelState.IsValid)
             {
@@ -67,7 +66,7 @@ namespace Sales.Backend.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Products products = await db.Products.FindAsync(id);
+            Product products = await db.Products.FindAsync(id);
             if (products == null)
             {
                 return HttpNotFound();
@@ -80,7 +79,7 @@ namespace Sales.Backend.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "ProductID,Description,Price,isAvaible,PublishOn")] Products products)
+        public async Task<ActionResult> Edit([Bind(Include = "ProductID,Description,Price,isAvaible,PublishOn")] Product products)
         {
             if (ModelState.IsValid)
             {
@@ -98,7 +97,7 @@ namespace Sales.Backend.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Products products = await db.Products.FindAsync(id);
+            Product products = await db.Products.FindAsync(id);
             if (products == null)
             {
                 return HttpNotFound();
@@ -111,7 +110,7 @@ namespace Sales.Backend.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Products products = await db.Products.FindAsync(id);
+            Product products = await db.Products.FindAsync(id);
             db.Products.Remove(products);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");

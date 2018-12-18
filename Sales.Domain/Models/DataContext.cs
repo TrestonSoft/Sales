@@ -8,6 +8,6 @@ namespace Sales.Domain.Models
         {
         }
 
-        public System.Data.Entity.DbSet<Sales.Common.Models.Products> Products { get; set; }
+        public System.Data.Entity.DbSet<Sales.Common.Models.Product> Products { get; set; }
     }
 }
